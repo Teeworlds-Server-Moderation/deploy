@@ -43,35 +43,35 @@ services:
         source: ./volumes/redis/config/redis.conf
         target: /usr/local/etc/redis/redis.conf
 
-  publisher:
-    container_name: publisher
-    build: publisher/.
-    networks:
-      - broker-network
-    depends_on:
-      - mosquitto
-    environment:
-      BROKER_ADDRESS: tcp://mosquitto:1883
-      BROKER_CLIENT_ID: publisher
-      BROKER_TOPIC: topic_01
+  # publisher:
+  #   container_name: publisher
+  #   build: publisher/.
+  #   networks:
+  #     - broker-network
+  #   depends_on:
+  #     - mosquitto
+  #   environment:
+  #     BROKER_ADDRESS: tcp://mosquitto:1883
+  #     BROKER_CLIENT_ID: publisher
+  #     BROKER_TOPIC: topic_01
 
-  detect-vpn:
-    container_name: detect-vpn
-    build: detect-vpn/.
-    networks:
-      - broker-network
-    depends_on:
-      - mosquitto
-      - redis
-    volumes:
-      - type: bind
-        source: ./volumes/subscriber
-        target: /data
-        read_only: false
-    environment:
-      BROKER_ADDRESS: tcp://mosquitto:1883
-      BROKER_CLIENT_ID: detect-vpn
-      BROKER_TOPIC: topic_01
+  # detect-vpn:
+  #   container_name: detect-vpn
+  #   build: detect-vpn/.
+  #   networks:
+  #     - broker-network
+  #   depends_on:
+  #     - mosquitto
+  #     - redis
+  #   volumes:
+  #     - type: bind
+  #       source: ./volumes/subscriber
+  #       target: /data
+  #       read_only: false
+  #   environment:
+  #     BROKER_ADDRESS: tcp://mosquitto:1883
+  #     BROKER_CLIENT_ID: detect-vpn
+  #     BROKER_TOPIC: topic_01
 
 networks:
   broker-network:

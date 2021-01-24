@@ -1,0 +1,3 @@
+[submodule "detect-vpn"]
+	path = detect-vpn
+	url = git@github.com:Teeworlds-Server-Moderation/detect-vpn.git
