@@ -8,7 +8,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/jxsl13/tw-moderation/common/mqtt"
+	"github.com/Teeworlds-Server-Moderation/common/mqtt"
 )
 
 // Connect to the broker and publish a message periodically
@@ -72,9 +72,9 @@ func main() {
 		for msg := range subscriber.Next() {
 			switch msg.Topic {
 			case "different":
-				log.Println("Received message(", msg.Topic, "): ", msg.Payload.(string))
+				log.Println("Received message(", msg.Topic, "): ", msg.Payload)
 			default:
-				log.Println("Received message(", msg.Topic, "): ", msg.Payload.(string))
+				log.Println("Received message(", msg.Topic, "): ", msg.Payload)
 			}
 		}
 	}()
