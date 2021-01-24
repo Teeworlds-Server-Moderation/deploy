@@ -1,0 +1,80 @@
+version: "3.8"
+services:
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto:latest
+    networks:
+      - broker-network
+    ports:
+      - target: 1883
+        published: 1883
+        protocol: tcp
+        mode: bridge
+    volumes:
+      - type: bind
+        source: ./volumes/mosquitto/config/
+        target: /mosquitto/config
+        read_only: true
+      - type: bind
+        source: ./volumes/mosquitto/data
+        target: /mosquitto/data
+      - type: bind
+        source: ./volumes/mosquitto/log/
+        target: /mosquitto/log
+
+  redis:
+    container_name: redis
+    image: redis:alpine
+    networks:
+      - redis-network
+    ports:
+      - target: 6379
+        published: 6379
+        protocol: tcp
+        mode: bridge
+    volumes:
+      - type: bind
+        source: ./volumes/redis/config
+        target: /usr/local/etc/redis
+      - type: bind
+        source: ./volumes/redis/data
+        target: /data
+      - type: bind
+        source: ./volumes/redis/config/redis.conf
+        target: /usr/local/etc/redis/redis.conf
+
+  publisher:
+    container_name: publisher
+    build: publisher/.
+    networks:
+      - broker-network
+    depends_on:
+      - mosquitto
+    environment:
+      BROKER_ADDRESS: tcp://mosquitto:1883
+      BROKER_CLIENT_ID: publisher
+      BROKER_TOPIC: topic_01
+
+  detect-vpn:
+    container_name: detect-vpn
+    build: detect-vpn/.
+    networks:
+      - broker-network
+    depends_on:
+      - mosquitto
+      - redis
+    volumes:
+      - type: bind
+        source: ./volumes/subscriber
+        target: /data
+        read_only: false
+    environment:
+      BROKER_ADDRESS: tcp://mosquitto:1883
+      BROKER_CLIENT_ID: detect-vpn
+      BROKER_TOPIC: topic_01
+
+networks:
+  broker-network:
+    external: false
+  redis-network:
+    external: false

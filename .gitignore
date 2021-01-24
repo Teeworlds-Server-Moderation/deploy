@@ -1,0 +1,10 @@
+**.DS_Store
+*/.env
+volumes/mosquitto/data/mosquitto.db
+volumes/mosquitto/log/mosquitto.log
+volumes/subscriber/*.txt
+volumes/redis/data/*
+detect-vpn/detect-vpn
+publisher/publisher
+subscriber/subscriber
+pubsub/pubsub
