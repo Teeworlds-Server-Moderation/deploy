@@ -8,13 +8,14 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/Teeworlds-Server-Moderation/common/events"
 	"github.com/Teeworlds-Server-Moderation/common/mqtt"
 )
 
 // Connect to the broker and publish a message periodically
 
 var (
-	topic         = "topic1"
+	topic         = events.TypePlayerJoin
 	serverAddress = "tcp://localhost:1883"
 	clientID      = "pubsub"
 )
@@ -44,7 +45,7 @@ func main() {
 	}
 	defer publisher.Close()
 
-	subscriber, err := mqtt.NewSubscriber(serverAddress, "pubsub-subscriber", "default", "different")
+	subscriber, err := mqtt.NewSubscriber(serverAddress, "pubsub-subscriber", "default", "different", topic)
 	if err != nil {
 		log.Fatalln("Could not create Subscriber:", err)
 	}
@@ -54,7 +55,7 @@ func main() {
 		cnt := 0
 		for {
 			select {
-			case <-time.After(time.Second):
+			case <-time.After(time.Second * 30):
 				if cnt%2 == 0 {
 					publisher.Publish(fmt.Sprintf("%d default", cnt))
 				} else {
