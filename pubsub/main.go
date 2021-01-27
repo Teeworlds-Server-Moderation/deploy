@@ -15,7 +15,6 @@ import (
 // Connect to the broker and publish a message periodically
 
 var (
-	topic         = events.TypePlayerJoin
 	serverAddress = "tcp://localhost:1883"
 	clientID      = "pubsub"
 )
@@ -27,10 +26,6 @@ func init() {
 	if id := os.Getenv("BROKER_CLIENT_ID"); id != "" {
 		clientID = id
 	}
-	if t := os.Getenv("BROKER_TOPIC"); t != "" {
-		topic = t
-	}
-
 	log.Println("Initialized with address: ", serverAddress, " clientID: ", clientID)
 
 	log.SetFlags(log.LstdFlags | log.Lmicroseconds)
@@ -45,7 +40,7 @@ func main() {
 	}
 	defer publisher.Close()
 
-	subscriber, err := mqtt.NewSubscriber(serverAddress, "pubsub-subscriber", "default", "different", topic)
+	subscriber, err := mqtt.NewSubscriber(serverAddress, "pubsub-subscriber", "default", "different", events.TypePlayerJoined, events.TypePlayerLeft)
 	if err != nil {
 		log.Fatalln("Could not create Subscriber:", err)
 	}
