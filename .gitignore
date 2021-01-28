@@ -1,6 +1,6 @@
 **.DS_Store
 */.env
-*.env
+.env
 volumes/mosquitto/data/mosquitto.db
 volumes/mosquitto/log/mosquitto.log
 volumes/subscriber/*.txt
