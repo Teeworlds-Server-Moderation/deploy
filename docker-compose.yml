@@ -42,7 +42,24 @@ services:
       - type: bind
         source: ./volumes/redis/config/redis.conf
         target: /usr/local/etc/redis/redis.conf
-
+    
+  monitor-zcatch-9303:
+      container_name: monitor-zcatch-9303
+      build: monitor-zcatch/.
+      networks:
+        - broker-network
+      depends_on:
+        - mosquitto
+      environment:
+        # this environment variable overrides any defined 
+        # variable in the .env file that is mounted below
+        MONITOR_ECON_ADDRESS: 89.163.148.121:9303 
+      # the .env file contains a commonly used password 
+      # that one may not want to show here.     
+      volumes:
+        - type: bind
+          source: ./volumes/monitor/.env
+          target: /app/.env
   # publisher:
   #   container_name: publisher
   #   build: publisher/.
