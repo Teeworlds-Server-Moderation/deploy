@@ -103,7 +103,7 @@ services:
         target: /app/.env
   
   monitor-zcatch-9306:
-    container_name: monitor-zcatch-9304
+    container_name: monitor-zcatch-9306
     build: monitor-zcatch/.
     restart: unless-stopped
     networks:
