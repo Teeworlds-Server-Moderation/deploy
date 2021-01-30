@@ -1,0 +1,6 @@
+[submodule "detect-vpn"]
+	path = detect-vpn
+	url = https://github.com/Teeworlds-Server-Moderation/detect-vpn.git
+[submodule "monitor-zcatch"]
+	path = monitor-zcatch
+	url = https://github.com/Teeworlds-Server-Moderation/monitor-zcatch.git
