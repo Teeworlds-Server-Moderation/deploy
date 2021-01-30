@@ -120,6 +120,26 @@ services:
       - type: bind
         source: ./volumes/monitor/.env
         target: /app/.env
+  
+  detect-vpn:
+    container_name: detect-vpn
+    build: detect-vpn/.
+    networks:
+      - broker-network
+    depends_on:
+      - mosquitto
+      - redis
+    volumes:
+      - type: bind
+        source: ./volumes/detect-vpn
+        target: /data
+        read_only: false
+    environment:
+        VPN_BAN_REASON: "VPN - https://zcat.ch/bans"
+        VPN_BAN_DURATION: 24h
+        BROADCAST_BANS: "false"
+        DEFAULT_BAN_COMMAND: "ban {IP} {DURATION:MINUTES} {REASON}"
+
   # publisher:
   #   container_name: publisher
   #   build: publisher/.
@@ -132,23 +152,6 @@ services:
   #     BROKER_CLIENT_ID: publisher
   #     BROKER_TOPIC: topic_01
 
-  # detect-vpn:
-  #   container_name: detect-vpn
-  #   build: detect-vpn/.
-  #   networks:
-  #     - broker-network
-  #   depends_on:
-  #     - mosquitto
-  #     - redis
-  #   volumes:
-  #     - type: bind
-  #       source: ./volumes/subscriber
-  #       target: /data
-  #       read_only: false
-  #   environment:
-  #     BROKER_ADDRESS: tcp://mosquitto:1883
-  #     BROKER_CLIENT_ID: detect-vpn
-  #     BROKER_TOPIC: topic_01
 
 networks:
   broker-network:
