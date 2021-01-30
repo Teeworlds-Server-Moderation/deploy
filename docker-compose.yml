@@ -126,6 +126,7 @@ services:
     build: detect-vpn/.
     networks:
       - broker-network
+      - redis-network
     depends_on:
       - mosquitto
       - redis
