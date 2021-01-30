@@ -3,6 +3,7 @@ services:
   mosquitto:
     container_name: mosquitto
     image: eclipse-mosquitto:latest
+    restart: unless-stopped
     networks:
       - broker-network
     ports:
@@ -25,6 +26,7 @@ services:
   redis:
     container_name: redis
     image: redis:alpine
+    restart: unless-stopped
     networks:
       - redis-network
     ports:
@@ -46,6 +48,7 @@ services:
   monitor-zcatch-9303:
       container_name: monitor-zcatch-9303
       build: monitor-zcatch/.
+      restart: unless-stopped
       networks:
         - broker-network
       depends_on:
@@ -53,7 +56,7 @@ services:
       environment:
         # this environment variable overrides any defined 
         # variable in the .env file that is mounted below
-        MONITOR_ECON_ADDRESS: 89.163.148.121:9303 
+        MONITOR_ECON_ADDRESS: 89.163.148.121:9303
       # the .env file contains a commonly used password 
       # that one may not want to show here.     
       volumes:
