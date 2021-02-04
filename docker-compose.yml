@@ -124,7 +124,7 @@ services:
   detect-vpn:
     container_name: detect-vpn
     build: detect-vpn/.
-    command: GOTRACEBACK=crash /app/vpn-detection 
+    command: ulimit -c unlimited && GOTRACEBACK=crash /app/vpn-detection 
     networks:
       - broker-network
       - redis-network
