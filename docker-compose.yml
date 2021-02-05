@@ -124,7 +124,7 @@ services:
   detect-vpn:
     container_name: detect-vpn
     build: detect-vpn/.
-    command: ulimit -c unlimited && GOTRACEBACK=crash /app/vpn-detection 
+    command: ulimit -c unlimited && /app/vpn-detection 
     networks:
       - broker-network
       - redis-network
@@ -137,6 +137,7 @@ services:
         target: /data
         read_only: false
     environment:
+        GOTRACEBACK: crash
         VPN_BAN_REASON: "VPN - https://zcat.ch/bans"
         VPN_BAN_DURATION: 24h
         BROADCAST_BANS: "false"
