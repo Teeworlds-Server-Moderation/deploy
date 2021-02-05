@@ -124,6 +124,8 @@ services:
   detect-vpn:
     container_name: detect-vpn
     build: detect-vpn/.
+    ulimits:
+      core: -1
     networks:
       - broker-network
       - redis-network
