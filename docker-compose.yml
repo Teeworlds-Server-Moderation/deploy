@@ -124,7 +124,7 @@ services:
   detect-vpn:
     container_name: detect-vpn
     build: detect-vpn/.
-    command: ulimit -c unlimited && /app/vpn-detection 
+    entrypoint: ulimit -c unlimited && /app/vpn-detection 
     networks:
       - broker-network
       - redis-network
