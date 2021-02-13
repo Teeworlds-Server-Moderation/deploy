@@ -11,16 +11,16 @@ services:
     networks:
      - broker-network
     ports:
-      - 4369:4369
       - 5672:5672
-      - 25672:25672
       - 127.0.0.1:15672:15672
     environment:
       RABBITMQ_VM_MEMORY_HIGH_WATERMARK: 0.99
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:?err}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:?derr}
+      
     volumes:
-      - ./volumes/rabbitmq/data/:/var/lib/rabbitmq
+      - ./volumes/rabbitmq/data:/var/lib/rabbitmq
+      - ./volumes/rabbitmq/logs:/var/log/rabbitmq
     mem_limit: 256M
     mem_reservation: 128M
     cpu_percent: 25
@@ -33,7 +33,7 @@ services:
     networks:
       - redis-network
     ports:
-      - "127.0.0.1:6379:6379"
+      - "6379:6379"
     volumes:
       - type: bind
         source: ./volumes/redis/config
@@ -49,7 +49,7 @@ services:
   monitor-zcatch-9303:
     container_name: monitor-zcatch-9303
     build: monitor-zcatch/.
-#    restart: unless-stopped
+    restart: unless-stopped
     networks:
       - broker-network
     depends_on:
@@ -65,7 +65,7 @@ services:
   monitor-zcatch-9304:
     container_name: monitor-zcatch-9304
     build: monitor-zcatch/.
-#    restart: unless-stopped
+    restart: unless-stopped
     networks:
       - broker-network
     depends_on:
@@ -81,7 +81,7 @@ services:
   monitor-zcatch-9305:
     container_name: monitor-zcatch-9305
     build: monitor-zcatch/.
-#    restart: unless-stopped
+    restart: unless-stopped
     networks:
       - broker-network
     depends_on:
@@ -97,7 +97,7 @@ services:
   monitor-zcatch-9306:
     container_name: monitor-zcatch-9306
     build: monitor-zcatch/.
-#    restart: unless-stopped
+    restart: unless-stopped
     networks:
       - broker-network
     depends_on:
