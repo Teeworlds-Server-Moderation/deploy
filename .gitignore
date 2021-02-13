@@ -12,6 +12,8 @@ volumes/subscriber/*.txt
 
 volumes/redis/data/*
 
+volumes/detect-vpn/*
+
 detect-vpn/detect-vpn
 
 publisher/publisher
@@ -23,3 +25,4 @@ pubsub/pubsub
 
 !**.git-keep
 !**sample.env
+!**.md
