@@ -1,27 +1,27 @@
 version: "3.8"
+
+
 services:
-  mosquitto:
-    container_name: mosquitto
-    image: eclipse-mosquitto:latest
+  rabbitmq:
+    container_name: rabbitmq
+    image: 'rabbitmq:3-management-alpine'
     restart: unless-stopped
     networks:
-      - broker-network
+     - broker-network
     ports:
-      - target: 1883
-        published: 1883
-        protocol: tcp
-        mode: bridge
+      - 4369:4369
+      - 5672:5672
+      - 25672:25672
+      - 127.0.0.1:15672:15672
+    environment:
+      RABBITMQ_VM_MEMORY_HIGH_WATERMARK: 0.99
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:?Please provide RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:?Please provide RABBITMQ_PASSWORD}
     volumes:
-      - type: bind
-        source: ./volumes/mosquitto/config/
-        target: /mosquitto/config
-        read_only: true
-      - type: bind
-        source: ./volumes/mosquitto/data
-        target: /mosquitto/data
-      - type: bind
-        source: ./volumes/mosquitto/log/
-        target: /mosquitto/log
+      - ./volumes/rabbitmq/data/:/var/lib/rabbitmq
+    mem_limit: 256M
+    mem_reservation: 128M
+    cpu_percent: 25
 
   redis:
     container_name: redis
@@ -30,10 +30,7 @@ services:
     networks:
       - redis-network
     ports:
-      - target: 6379
-        published: 6379
-        protocol: tcp
-        mode: bridge
+      - "127.0.0.1:6379:6379"
     volumes:
       - type: bind
         source: ./volumes/redis/config
@@ -45,116 +42,99 @@ services:
         source: ./volumes/redis/config/redis.conf
         target: /usr/local/etc/redis/redis.conf
     
-  monitor-zcatch-9303:
-      container_name: monitor-zcatch-9303
-      build: monitor-zcatch/.
-#      restart: unless-stopped
-      networks:
-        - broker-network
-      depends_on:
-        - mosquitto
-      environment:
-        # this environment variable overrides any defined 
-        # variable in the .env file that is mounted below
-        MONITOR_ECON_ADDRESS: 89.163.148.121:9303
-      # the .env file contains a commonly used password 
-      # that one may not want to show here.     
-      volumes:
-        - type: bind
-          source: ./volumes/monitor/.env
-          target: /app/.env
+#   monitor-zcatch-9303:
+#       container_name: monitor-zcatch-9303
+#       build: monitor-zcatch/.
+# #      restart: unless-stopped
+#       networks:
+#         - broker-network
+#       depends_on:
+#         - mosquitto
+#       environment:
+#         # this environment variable overrides any defined 
+#         # variable in the .env file that is mounted below
+#         MONITOR_ECON_ADDRESS: 89.163.148.121:9303
+#       # the .env file contains a commonly used password 
+#       # that one may not want to show here.     
+#       volumes:
+#         - type: bind
+#           source: ./volumes/monitor/.env
+#           target: /app/.env
   
-  monitor-zcatch-9304:
-      container_name: monitor-zcatch-9304
-      build: monitor-zcatch/.
-#      restart: unless-stopped
-      networks:
-        - broker-network
-      depends_on:
-        - mosquitto
-      environment:
-        # this environment variable overrides any defined 
-        # variable in the .env file that is mounted below
-        MONITOR_ECON_ADDRESS: 89.163.148.121:9304
-      # the .env file contains a commonly used password 
-      # that one may not want to show here.     
-      volumes:
-        - type: bind
-          source: ./volumes/monitor/.env
-          target: /app/.env
+#   monitor-zcatch-9304:
+#       container_name: monitor-zcatch-9304
+#       build: monitor-zcatch/.
+# #      restart: unless-stopped
+#       networks:
+#         - broker-network
+#       depends_on:
+#         - mosquitto
+#       environment:
+#         # this environment variable overrides any defined 
+#         # variable in the .env file that is mounted below
+#         MONITOR_ECON_ADDRESS: 89.163.148.121:9304
+#         MONITOR_ECON_PASSWORD: ${MONITOR_ECON_PASSWORD:?Please provide MONITOR_ECON_PASSWORD}
+#       volumes:
+#         - type: bind
+#           source: ./volumes/monitor/.env
+#           target: /app/.env
   
-  monitor-zcatch-9305:
-    container_name: monitor-zcatch-9305
-    build: monitor-zcatch/.
-#    restart: unless-stopped
-    networks:
-      - broker-network
-    depends_on:
-      - mosquitto
-    environment:
-      # this environment variable overrides any defined 
-      # variable in the .env file that is mounted below
-      MONITOR_ECON_ADDRESS: 89.163.148.121:9305
-    # the .env file contains a commonly used password 
-    # that one may not want to show here.     
-    volumes:
-      - type: bind
-        source: ./volumes/monitor/.env
-        target: /app/.env
+#   monitor-zcatch-9305:
+#     container_name: monitor-zcatch-9305
+#     build: monitor-zcatch/.
+# #    restart: unless-stopped
+#     networks:
+#       - broker-network
+#     depends_on:
+#       - mosquitto
+#     environment:
+#       # this environment variable overrides any defined 
+#       # variable in the .env file that is mounted below
+#       MONITOR_ECON_ADDRESS: 89.163.148.121:9305
+#       MONITOR_ECON_PASSWORD: ${MONITOR_ECON_PASSWORD:?Please provide MONITOR_ECON_PASSWORD}
+#     volumes:
+#       - type: bind
+#         source: ./volumes/monitor/.env
+#         target: /app/.env
   
-  monitor-zcatch-9306:
-    container_name: monitor-zcatch-9306
-    build: monitor-zcatch/.
-#    restart: unless-stopped
-    networks:
-      - broker-network
-    depends_on:
-      - mosquitto
-    environment:
-      # this environment variable overrides any defined 
-      # variable in the .env file that is mounted below
-      MONITOR_ECON_ADDRESS: 89.163.148.121:9306
-    # the .env file contains a commonly used password 
-    # that one may not want to show here.     
-    volumes:
-      - type: bind
-        source: ./volumes/monitor/.env
-        target: /app/.env
+#   monitor-zcatch-9306:
+#     container_name: monitor-zcatch-9306
+#     build: monitor-zcatch/.
+# #    restart: unless-stopped
+#     networks:
+#       - broker-network
+#     depends_on:
+#       - mosquitto
+#     environment:
+#       # this environment variable overrides any defined 
+#       # variable in the .env file that is mounted below
+#       MONITOR_ECON_ADDRESS: 89.163.148.121:9306
+#       MONITOR_ECON_PASSWORD: ${MONITOR_ECON_PASSWORD:?Please provide MONITOR_ECON_PASSWORD}   
   
-  detect-vpn:
-    container_name: detect-vpn
-    build: detect-vpn/.
-    ulimits:
-      core: -1
-    networks:
-      - broker-network
-      - redis-network
-    depends_on:
-      - mosquitto
-      - redis
-    volumes:
-      - type: bind
-        source: ./volumes/detect-vpn
-        target: /data
-        read_only: false
-    environment:
-        GOTRACEBACK: crash
-        VPN_BAN_REASON: "VPN - https://zcat.ch/bans"
-        VPN_BAN_DURATION: 24h
-        BROADCAST_BANS: "false"
-        DEFAULT_BAN_COMMAND: "ban {IP} {DURATION:MINUTES} {REASON}"
+#   detect-vpn:
+#     container_name: detect-vpn
+#     build: detect-vpn/.
+#     ulimits:
+#       core: -1
+#     networks:
+#       - broker-network
+#       - redis-network
+#     depends_on:
+#       - rabbitmq
+#       - redis
+#     volumes:
+#       - type: bind
+#         source: ./volumes/detect-vpn
+#         target: /data
+#         read_only: false
+#     environment:
+#         BROKER_USER: ${RABBITMQ_USER:?Please provide RABBITMQ_USER}
+#         BROKER_PASSWORD: ${RABBITMQ_PASSWORD:?Please provide RABBITMQ_PASSWORD}
+#         VPN_BAN_REASON: "VPN - https://zcat.ch/bans"
+#         VPN_BAN_DURATION: 24h
+#         BROADCAST_BANS: "false"
+#         DEFAULT_BAN_COMMAND: "ban {IP} {DURATION:MINUTES} {REASON}"
 
-  # publisher:
-  #   container_name: publisher
-  #   build: publisher/.
-  #   networks:
-  #     - broker-network
-  #   depends_on:
-  #     - mosquitto
-  #   environment:
-  #     BROKER_ADDRESS: tcp://mosquitto:1883
-  #     BROKER_CLIENT_ID: publisher
-  #     BROKER_TOPIC: topic_01
 
 
 networks:
