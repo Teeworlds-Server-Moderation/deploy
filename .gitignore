@@ -3,6 +3,7 @@
 
 volumes/rabbitmq/config/*
 volumes/rabbitmq/data/*
+volumes/rabbitmq/logs/*
 
 volumes/mosquitto/data/mosquitto.db
 
@@ -26,3 +27,4 @@ pubsub/pubsub
 !**.git-keep
 !**sample.env
 !**.md
+
