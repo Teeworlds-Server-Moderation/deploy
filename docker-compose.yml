@@ -1,4 +1,4 @@
-version: "3.8"
+version: "2.2"
 
 
 services:
@@ -34,15 +34,9 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - type: bind
-        source: ./volumes/redis/config
-        target: /usr/local/etc/redis
-      - type: bind
-        source: ./volumes/redis/data
-        target: /data
-      - type: bind
-        source: ./volumes/redis/config/redis.conf
-        target: /usr/local/etc/redis/redis.conf
+      - ./volumes/redis/config:/usr/local/etc/redis
+      - ./volumes/redis/data:/data
+      - ./volumes/redis/config/redis.conf:/usr/local/etc/redis/redis.conf
   
   # monitor of teeworlds servers
   monitor-zcatch-9303:
