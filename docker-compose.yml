@@ -23,7 +23,6 @@ services:
       - ./volumes/rabbitmq/logs:/var/log/rabbitmq
     mem_limit: 256M
     mem_reservation: 128M
-    cpu_percent: 25
   
   # key value store
   redis:
