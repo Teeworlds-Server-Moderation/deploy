@@ -25,8 +25,11 @@ test:
 	go test -timeout 2m -run ^Test*$ github.com/jxsl13/tw-moderation/common/mqtt
 
 update:
-# first delete the required dependencies and then execute this
+	# first delete the required dependencies and then execute this
 	go get -u
-	 
+
+proxy:
+	# create a temporary proxy that exposes the rabbitmq broker on port 5673
+	socat tcp-listen:5673,reuseaddr,fork tcp:localhost:5672
 
 
