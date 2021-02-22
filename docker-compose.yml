@@ -124,6 +124,24 @@ services:
       VPN_BAN_DURATION: 24h
       BROADCAST_BANS: "false"
       DEFAULT_BAN_COMMAND: "ban {IP} {DURATION:MINUTES} {REASON}"
+    
+  reason-validation:
+    container_name: reason-validation
+    build: reason-validation/.
+    restart: unless-stopped
+    networks:
+      - broker-network
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./volumes/reason-validation:/data
+    environment:
+      BROKER_USER: ${RABBITMQ_USER:?err}
+      BROKER_PASSWORD: ${RABBITMQ_PASSWORD:?derr}
+      BROADCAST_NON_ABORT_ACTIONS: "false"
+      DEFAULT_VOTEBAN_DURATION: 30m
+      DEFAULT_VOTEBAN_COMMAND: "voteban {IP} {DURATION:SECONDS}"
+      DEFAULT_BAN_COMMAND: "ban {IP} {DURATION:MINUTES} {REASON}"
 
 
 networks:
