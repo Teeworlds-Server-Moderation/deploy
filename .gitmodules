@@ -4,3 +4,6 @@
 [submodule "monitor-zcatch"]
 	path = monitor-zcatch
 	url = https://github.com/Teeworlds-Server-Moderation/monitor-zcatch.git
+[submodule "reason-validation"]
+	path = reason-validation
+	url = https://github.com/Teeworlds-Server-Moderation/reason-validation.git
