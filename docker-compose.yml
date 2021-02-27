@@ -1,4 +1,4 @@
-version: "2.2"
+version: "2.4"
 
 
 services:
@@ -6,6 +6,7 @@ services:
   # message broker
   rabbitmq:
     container_name: rabbitmq
+    hostname: rabbitmq
     image: 'rabbitmq:3-management-alpine'
     restart: unless-stopped
     networks:
