@@ -1,4 +1,7 @@
-default: start
+default: deploy
+
+deploy:
+	docker-compose up -d --force-recreate --build
 
 start: build
 	docker-compose up -d
