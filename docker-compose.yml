@@ -15,6 +15,7 @@ services:
       - 127.0.0.1:5672:5672
       - 127.0.0.1:15672:15672
     environment:
+      RABBITMQ_NODENAME: rabbitmq@rabbitmq
       RABBITMQ_VM_MEMORY_HIGH_WATERMARK: 0.99
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:?err}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:?derr}
